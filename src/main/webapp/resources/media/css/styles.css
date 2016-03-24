@@ -1,0 +1,35 @@
+body {
+  background: #ddd;
+  font-family: "futura-pt", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.075);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+.bg-lightgray {
+  background: #f2f2f2 !important;
+}
+.bt {
+  display: inline-block;
+  text-align: center;
+  border-radius: 25px;
+  line-height: 14px;
+  border: 1px solid;
+  padding: 10px 20px;
+  transition: all .5s ease;
+}
+
+.fss-table{
+  font-weight: 500 !important;
+  text-align: center !important;
+  font-size: 16px;
+}
+
+.table-row{
+ border-bottom: 1px solid #333;
+}
+
+.table-col{
+ border-right: 1px solid #333;
+}
