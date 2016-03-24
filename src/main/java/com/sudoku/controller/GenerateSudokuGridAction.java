@@ -1,6 +1,8 @@
 package com.sudoku.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,7 @@ public class GenerateSudokuGridAction {
 	private SudokuGenerateHelper sudokuGenerateHelper;
 	
 	@RequestMapping("/puzzleGenerator")
-	public ModelAndView generatePuzzle(){
+	public ModelAndView generatePuzzle(HttpServletRequest request){
 		sudokuGenerateHelper = new SudokuGenerateHelper();
 		
 		 int[][] grid = sudokuGenerateHelper.generatePuzzle();
@@ -33,6 +35,8 @@ public class GenerateSudokuGridAction {
 		mv.addObject("grid", grid);
 		mv.addObject("maskGrid", maskGrid);
 		 sudokuGenerateHelper.displayGrid(grid);
+		 
+		 request.getSession().setAttribute("maskGrid", maskGrid);
 		return mv;
 	}
 

@@ -33,3 +33,11 @@ body {
 .table-col{
  border-right: 1px solid #333;
 }
+
+.table-cell-red{
+	border:2px solid red!important;
+}
+
+.table-cell-green{
+	border:2px solid green!important;
+}

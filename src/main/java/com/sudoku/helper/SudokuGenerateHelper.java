@@ -35,7 +35,7 @@ public class SudokuGenerateHelper {
 		}
 		Integer[] random = createNumbers();
 		for (int i = 0; i < 9; i++) {
-			if (!checkRow(row, random[i]) && !checkCol(col, random[i]) && !validGrid(row, col, random[i])) {
+			if (!checkRow(row, random[i],grid) && !checkCol(col, random[i],grid) && !validGrid(row, col, random[i],grid)) {
 				grid[row][col] = random[i];
 
 				if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9))
@@ -55,7 +55,7 @@ public class SudokuGenerateHelper {
 	 * @param val
 	 * @return
 	 */
-	public  boolean checkRow(int row, int val) {
+	public  boolean checkRow(int row, int val,int[][] grid) {
 		for (int i = 0; i < 9; i++) {
 			if (grid[row][i] == val) {
 				return true;
@@ -70,7 +70,7 @@ public class SudokuGenerateHelper {
 	 * @param val
 	 * @return
 	 */
-	public  boolean checkCol(int col, int val) {
+	public  boolean checkCol(int col, int val,int[][] grid) {
 		for (int i = 0; i < 9; i++) {
 			if ( grid[i][col] == val) {
 				return true;
@@ -87,7 +87,7 @@ public class SudokuGenerateHelper {
 	 * @param value
 	 * @return
 	 */
-	public  boolean validGrid(int row, int col, int value) {
+	public  boolean validGrid(int row, int col, int value,int[][] grid) {
 
 		int startRow = row / 3 * 3;
 		int startCol = col / 3 * 3;

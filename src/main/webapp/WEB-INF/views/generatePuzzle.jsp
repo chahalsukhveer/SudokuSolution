@@ -72,7 +72,7 @@ input {
 	</table>
 </div>
 <div class="right">
-	<table id="maskable" style="width: 300px" class="fss-table">
+	<table id="maskable" style="width: 300px" class="fss-table" data="${maskGrid}">
 
 		<tbody>
 			<c:forEach var="row" items="${maskGrid}" varStatus="looprow">
@@ -92,7 +92,7 @@ input {
 
 					<c:choose>
 						<c:when test="${(loopcol.index+1)%3 == 0}">
-							<td class="table-col"><input type="text" value="${col}" class="checkval" disabled="disabled"/></td>
+							<td class="table-col" row-id="${looprow.index}" col-id="${loopcol.index}"><input type="text" value="${col}" class="checkval" disabled="disabled"/></td>
 						</c:when>
 						<c:otherwise>
 							<td><input type="text" value="${col}" class="checkval" disabled="disabled"/></td>
@@ -114,8 +114,52 @@ $(function () {
 	    if($(item).val() == 0){
 	    	$(item).val("");
 	    	$(item).removeAttr('disabled');
+	    	$(item).addClass('validateInput');
 	    }
 	  
 	});
+	
+	$(".validateInput").keyup(function(){
+		var grid=[];
+		grid='maskGrid';
+		var value =$(this).val();
+		var cell=$(this).closest('td');
+
+		if(value == ""){
+			$(cell).removeClass("table-cell-green")
+			$(cell).removeClass("table-cell-red")
+			value=0;
+		}
+		var rowIndex=($(this).closest('td').parent().index());
+		var colIndex=($(this).closest('td').index());
+		
+		$.ajax({
+				traditional: true,
+				method:"POST",
+			     url: '/SudokuSolution/validateCellInput',
+			     data:{value:value,rowIndex:rowIndex,colIndex:colIndex},
+			     success : function(data) {
+						console.log("SUCCESS: ", data);
+						if(value != 0){
+							if(data.isValid == true){
+								$(cell).addClass("table-cell-green")
+							}
+							else{
+								$(cell).addClass("table-cell-red")
+							}
+						}	
+						
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+		    });
+		
+	});
 });
+
+
 </script>
