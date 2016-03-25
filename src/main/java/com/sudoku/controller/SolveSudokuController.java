@@ -1,5 +1,7 @@
 package com.sudoku.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,9 @@ private SudokuGenerateHelper sudokuGenerateHelper;
 		SudokuGrid sd = (SudokuGrid) request.getSession().getAttribute("sudokuGrid");
 		
 		int[][] grid= sd.getGrid();
-		int[][] fixedCellList = sd.getFixedCellsList();
+		Map<String, Integer> fixedCellMap = sd.getFixedCellMap();
 		 
-		sudokuGenerateHelper.fillGrid(0, 0,grid,fixedCellList);
+		sudokuGenerateHelper.fillGrid(0, 0,grid,fixedCellMap);
 		 request.getSession().setAttribute("sudokuGrid", sd);
 		 
 		 ModelAndView mv = new ModelAndView("solvePuzzle");

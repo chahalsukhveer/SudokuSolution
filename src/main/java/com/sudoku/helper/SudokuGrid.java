@@ -1,6 +1,7 @@
 package com.sudoku.helper;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class SudokuGrid  implements Serializable{
 
@@ -10,7 +11,7 @@ public class SudokuGrid  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private int[][] grid;
-	private int[][] fixedCellsList;
+	private Map<String, Integer>  fixedCellMap;
 
 	public int[][] getGrid() {
 		return grid;
@@ -20,12 +21,14 @@ public class SudokuGrid  implements Serializable{
 		this.grid = grid;
 	}
 
-	public int[][] getFixedCellsList() {
-		return fixedCellsList;
+	public Map<String, Integer> getFixedCellMap() {
+		return fixedCellMap;
 	}
 
-	public void setFixedCellsList(int[][] fixedCellsList) {
-		this.fixedCellsList = fixedCellsList;
+	public void setFixedCellMap(Map<String, Integer> fixedCellMap) {
+		this.fixedCellMap = fixedCellMap;
 	}
+
+	
 
 }

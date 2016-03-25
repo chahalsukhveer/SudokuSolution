@@ -2,6 +2,8 @@ package com.sudoku.helper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -29,31 +31,47 @@ public class SudokuGenerateHelper {
 	 * @param col
 	 * @return
 	 */
-	public  boolean fillGrid(int row, int col,int[][] grid,int[][] fixedCellList) {
+	public  boolean fillGrid(int row, int col,int[][] grid,Map<String, Integer> fixedCellMap) {
 		if (row == 9) {
 			return true;
 		}
-		//check if it is fixed cell
 		
-		if(fixedCellList !=null){
-			for(int i=0;i<fixedCellList.length ;i++){
-				int rowIndex = fixedCellList[i][0];
-				int colIndex = fixedCellList[i][01];
-				
-				if(row == rowIndex && col == colIndex && grid[row][col] !=0){
+		if(fixedCellMap !=null){//Solving puzzle and skipping fixed cells
+			displayGrid(grid);
+			String key =row+""+col;
+				if(fixedCellMap.containsKey(key) ){
 					//move to next cell
-					if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellList))
+					if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellMap))
 						return true;
 				}
-			}
+				else{
+					return guessAndFill(row,col,grid,fixedCellMap);
+				}
 		}
+		else{ // creating new grid for Input Puzzle
+			return guessAndFill(row,col,grid,fixedCellMap);
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Fill in grid with random number and check its valid
+	 * @param row
+	 * @param col
+	 * @param grid
+	 * @param fixedCellMap
+	 * @return
+	 */
+	
+	private boolean guessAndFill(int row, int col,int[][] grid,Map<String, Integer> fixedCellMap){
 		
 		Integer[] random = createNumbers();
 		for (int i = 0; i < 9; i++) {
 			if (!checkRow(row, random[i],grid) && !checkCol(col, random[i],grid) && !validGrid(row, col, random[i],grid)) {
 				grid[row][col] = random[i];
 
-				if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellList))
+				if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellMap))
 					return true;
 				else { // Backtracking
 					grid[row][col] = 0;
@@ -61,7 +79,7 @@ public class SudokuGenerateHelper {
 			}
 		}
 		return false;
-
+		
 	}
 
 	/**
@@ -126,20 +144,19 @@ public class SudokuGenerateHelper {
 	 */
 	public  int[][] maskGrid(int[][] grid, int masks) {
 		double pendingCells = 81;
-		int[][] grid1 =grid;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				double randomCell = masks / pendingCells;
 				if (Math.random() <= randomCell) {
-					grid1[i][j] = 0;
+					grid[i][j] = 0;
 					masks--;
 				}
 				pendingCells--;
 			}
 		}
-
+System.out.println("prnding cells :"+pendingCells);
 		displayGrid(grid);
-		return grid1;
+		return grid;
 
 	}
 
@@ -147,7 +164,7 @@ public class SudokuGenerateHelper {
 	 * Create a List of filled cells, so that they aren't change by User or algo
 	 * @param grid
 	 */
-	public  int[][] getFixedCellList(int[][] grid) {
+	public  Map<String, Integer> getFixedCellList(int[][] grid) {
 
 		int filledCells = 0;
 		for (int i = 0; i < 9; i++)
@@ -155,20 +172,19 @@ public class SudokuGenerateHelper {
 				if (grid[i][j] != 0)
 					filledCells++;
 
+		System.out.println("filledCells :::: "+filledCells);
 		// Store indexes of filled cells in a List so that user can't change
-		int index=0;
-		int[][] fixedCellList =  new int[filledCells][2];
+		Map<String, Integer> valueMap = new HashMap<String, Integer>(0);
 		for(int row=0;row<9;row++){
 			for(int col=0;col<9;col++){
 				if(grid[row][col] !=0){
-					fixedCellList[index][0]=row;
-					fixedCellList[index][1]=col;
-					index++;
+					String key = row+""+col;
+					valueMap.put(key, grid[row][col]);
 				}
 			}
 		}
 
-		return fixedCellList;
+		return valueMap;
 	}
 
 	/**

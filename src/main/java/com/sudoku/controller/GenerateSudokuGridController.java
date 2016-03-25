@@ -1,6 +1,8 @@
 package com.sudoku.controller;
 
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,8 @@ public class GenerateSudokuGridController{
 		mv.addObject("grid", grid);
 		SudokuGrid sd = new SudokuGrid();
 		sd.setGrid(maskGrid);
-		int[][] fixedCells=sudokuGenerateHelper.getFixedCellList(maskGrid);
-		sd.setFixedCellsList(fixedCells);
-		displayGrid(fixedCells);
+		Map<String, Integer> fixedCellMap=sudokuGenerateHelper.getFixedCellList(maskGrid);
+		sd.setFixedCellMap(fixedCellMap);
 		mv.addObject("maskGrid", sd);
 
 		sudokuGenerateHelper.displayGrid(grid);
@@ -48,24 +49,13 @@ public class GenerateSudokuGridController{
 	}
 
 	public  void displayGrid(int[][] grid) {
-		System.out.println(" -------------------------------");
-		for (int row = 0; row < 9; row++) {
-
+		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < 2; col++) {
-
-				String value = grid[row][col] > 0 ? grid[row][col] + "" : " ";
-
-				if (col % 3 == 0) {
-					System.out.print(" | " + value);
-				} else {
-					System.out.print("  " + value);
-				}
+			System.out.print("  {" + grid[row][col]+"}");
 
 			}
 			System.out.println(" |");
-			if ((row + 1) % 3 == 0) {
-				System.out.println(" -------------------------------");
-			}
+			
 		}
 	}
 
