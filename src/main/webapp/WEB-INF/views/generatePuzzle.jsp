@@ -5,36 +5,7 @@
 	href="<c:url value="/resources/css/styles.css" />"></link>
 <script src="<c:url value="/resources/js/jquery.js" />"></script>
 <style>
-table {
-	border: 1px solid black;
-}
 
-table {
-	border-collapse: collapse;
-}
-
-input {
-	width: 100%;
-	padding: 10px;
-	margin: 0px;
-}
-
-div.container {
-	margin: 15px;
-}
-
-div.left, div.right {
-	float: left;
-	padding: 10px;
-}
-
-div.left {
-	background-color: orange;
-}
-
-div.right {
-	background-color: yellow;
-}
 </style>
 <div>
 	<h2>Sudoku Solver</h2>
