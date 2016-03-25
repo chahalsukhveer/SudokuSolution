@@ -65,10 +65,10 @@ div.right {
 							<c:when test="${(loopcol.index+1)%3 == 0}">
 								<td class="table-col" row-id="${looprow.index}"
 									col-id="${loopcol.index}"><input type="text"
-									value="${col}" class="checkval" disabled="disabled" /></td>
+									value="${col}" class="checkval,numeric" disabled="disabled" /></td>
 							</c:when>
 							<c:otherwise>
-								<td><input type="text" value="${col}" class="checkval"
+								<td><input type="text" value="${col}" class="checkval,numeric"
 									disabled="disabled" /></td>
 							</c:otherwise>
 						</c:choose>

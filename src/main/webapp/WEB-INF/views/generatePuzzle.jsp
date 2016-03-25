@@ -103,7 +103,12 @@ div.right {
 
 		});
 
-		$(".validateInput").keyup(function() {
+		$(".validateInput").keyup(function(e) {
+			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			       alert("Numbers only")
+			       $(this).val("");
+			       return false;
+			    }
 			var grid = [];
 			grid = 'maskGrid';
 			var value = $(this).val();
@@ -114,6 +119,7 @@ div.right {
 				$(cell).removeClass("table-cell-red")
 				value = 0;
 			}
+		
 			var rowIndex = ($(this).closest('td').parent().index());
 			var colIndex = ($(this).closest('td').index());
 
