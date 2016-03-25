@@ -29,16 +29,31 @@ public class SudokuGenerateHelper {
 	 * @param col
 	 * @return
 	 */
-	public  boolean fillGrid(int row, int col) {
+	public  boolean fillGrid(int row, int col,int[][] grid,int[][] fixedCellList) {
 		if (row == 9) {
 			return true;
 		}
+		//check if it is fixed cell
+		
+		if(fixedCellList !=null){
+			for(int i=0;i<fixedCellList.length ;i++){
+				int rowIndex = fixedCellList[i][0];
+				int colIndex = fixedCellList[i][01];
+				
+				if(row == rowIndex && col == colIndex && grid[row][col] !=0){
+					//move to next cell
+					if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellList))
+						return true;
+				}
+			}
+		}
+		
 		Integer[] random = createNumbers();
 		for (int i = 0; i < 9; i++) {
 			if (!checkRow(row, random[i],grid) && !checkCol(col, random[i],grid) && !validGrid(row, col, random[i],grid)) {
 				grid[row][col] = random[i];
 
-				if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9))
+				if (fillGrid(col == 8 ? (row + 1) : row, (col + 1) % 9,grid, fixedCellList))
 					return true;
 				else { // Backtracking
 					grid[row][col] = 0;
@@ -132,18 +147,28 @@ public class SudokuGenerateHelper {
 	 * Create a List of filled cells, so that they aren't change by User or algo
 	 * @param grid
 	 */
-	public  void getFilledCells(int[][] grid) {
+	public  int[][] getFixedCellList(int[][] grid) {
 
 		int filledCells = 0;
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 9; j++)
-				if (grid[i][j] == 0)
+				if (grid[i][j] != 0)
 					filledCells++;
 
 		// Store indexes of filled cells in a List so that user can't change
-		// that
+		int index=0;
+		int[][] fixedCellList =  new int[filledCells][2];
+		for(int row=0;row<9;row++){
+			for(int col=0;col<9;col++){
+				if(grid[row][col] !=0){
+					fixedCellList[index][0]=row;
+					fixedCellList[index][1]=col;
+					index++;
+				}
+			}
+		}
 
-		return;
+		return fixedCellList;
 	}
 
 	/**
@@ -174,7 +199,7 @@ public class SudokuGenerateHelper {
 
 	public int[][]  generatePuzzle() {
 
-		if (!fillGrid(0, 0)) {
+		if (!fillGrid(0, 0,grid,null)) {
 			System.out.println("this can't be solved");
 		} else {
 			System.out.println("solved");

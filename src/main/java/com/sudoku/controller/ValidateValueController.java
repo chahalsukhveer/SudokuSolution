@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sudoku.helper.SudokuGenerateHelper;
+import com.sudoku.helper.SudokuGrid;
 import com.sudoku.helper.Validate;
 
 @RestController
@@ -19,7 +20,11 @@ public class ValidateValueController {
 	@RequestMapping(value="/validateCellInput",method=RequestMethod.POST)
 	public Validate validatePuzzle(HttpServletRequest request){
 		System.out.println("Inside validate controller");
-		int[][] grid= (int[][]) request.getSession().getAttribute("maskGrid");
+		
+		SudokuGrid sd = (SudokuGrid) request.getSession().getAttribute("sudokuGrid");
+		
+			int[][] grid= sd.getGrid();
+		
 		String value = request.getParameter("value");
 		String rowIndex = request.getParameter("rowIndex");
 		String colIndex = request.getParameter("colIndex");
