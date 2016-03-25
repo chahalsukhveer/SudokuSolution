@@ -32,7 +32,7 @@ public class GenerateSudokuGridController{
 				 maskGrid[i][j] = grid[i][j] ;
 			 }
 		 }
-		 maskGrid =sudokuGenerateHelper.maskGrid(maskGrid, 40);
+		 maskGrid =sudokuGenerateHelper.maskGrid(maskGrid, 50);
 		
 		ModelAndView mv = new ModelAndView("generatePuzzle");
 		mv.addObject("grid", grid);
@@ -46,17 +46,6 @@ public class GenerateSudokuGridController{
 		 
 		 request.getSession().setAttribute("sudokuGrid", sd);
 		return mv;
-	}
-
-	public  void displayGrid(int[][] grid) {
-		for (int row = 0; row < grid.length; row++) {
-			for (int col = 0; col < 2; col++) {
-			System.out.print("  {" + grid[row][col]+"}");
-
-			}
-			System.out.println(" |");
-			
-		}
 	}
 
 }
